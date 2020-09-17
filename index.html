@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="fr">
+  <head>
+    <title>Conférence Studio Renegade</title>
+    <meta charset="utf-8" />
+    <meta name="robots" content="noindex, nofollow" />
+    <meta name="viewport" content="width=340, initial-scale=1.0" />
+    <link rel="icon" type="image/png" href="/favicon.png" />
+    <meta itemprop="image" content="/favicon.png" />
+    <link rel="mask-icon" href="/favicon.svg" color="#E80C0C" />
+    <style>
+      body {
+        margin: 0;
+        padding: 0;
+        width: 100%;
+        height: 100%;
+        font-size: 0;
+      }
+      #container {
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        display: flex;
+        flex-direction: row;
+      }
+      .sidebar {
+        background: url("https://studiorenegade.fr/static/img/header-back.jpg")
+          no-repeat;
+        width: 60px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: space-between;
+      }
+      .logo {
+        width: 50px;
+      }
+      .layout-controls {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: space-around;
+      }
+      .left {
+        flex: 7;
+        display: flex;
+        flex-direction: column;
+      }
+      .right {
+        flex: 3;
+        display: flex;
+        flex-direction: column;
+      }
+      .none {
+        display: none;
+      }
+      #chat {
+        flex: 2;
+      }
+      #conference {
+        flex: 1;
+      }
+      #studio {
+        flex: 1;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="container">
+      <div class="sidebar">
+        <img class="logo" src="logo.png" />
+        <div class="layout-controls">
+          <a
+            class="layout-control option1"
+            onclick="switchMode(MODES.FIFTY_FIFTY)"
+            href="#"
+            ><img class="logo" src="logo.png"
+          /></a>
+          <a
+            class="layout-control option2"
+            onclick="switchMode(MODES.BIG_CONF)"
+            href="#"
+            ><img class="logo" src="logo.png"
+          /></a>
+          <a
+            class="layout-control option3"
+            onclick="switchMode(MODES.BIG_STUDIO)"
+            href="#"
+            ><img class="logo" src="logo.png"
+          /></a>
+        </div>
+      </div>
+      <div class="left"></div>
+      <div class="right"></div>
+      <div class="none">
+        <iframe
+          id="conference"
+          frameborder="0"
+          allow="accelerometer; encrypted-media; gyroscope; picture-in-picture"
+          allowfullscreen
+        ></iframe>
+        <iframe
+          id="studio"
+          frameborder="0"
+          allowfullscreen="true"
+          scrolling="no"
+        ></iframe>
+        <iframe
+          id="chat"
+          frameborder="0"
+          allowfullscreen="true"
+          scrolling="no"
+        ></iframe>
+      </div>
+    </div>
+    <script>
+      const chatUrl =
+        "https://www.twitch.tv/embed/studiorenegade/chat?parent=127.0.0.1";
+      const confUrl = "https://www.youtube.com/embed/dhM294iwW_Q";
+      const studioUrl = "https://www.youtube.com/embed/X1k16fAkLMA";
+      const metaTitle = "Renegade - Conf PS5";
+
+      const conf = document.querySelector("#conference");
+      const chat = document.querySelector("#chat");
+      const studio = document.querySelector("#studio");
+      const left = document.querySelector(".left");
+      const right = document.querySelector(".right");
+
+      chat.src = chatUrl;
+      conf.src = confUrl;
+      studio.src = studioUrl;
+      document.title = metaTitle;
+
+      const MODES = {
+        FIFTY_FIFTY: "FIFTY_FIFTY",
+        BIG_CONF: "BIG_CONF",
+        BIG_STUDIO: "BIG_STUDIO",
+      };
+
+      const applyMode = (mode) => {
+        switch (mode) {
+          case MODES.BIG_STUDIO:
+            left.appendChild(studio);
+            right.appendChild(chat);
+            right.appendChild(conf);
+            break;
+          case MODES.BIG_CONF:
+            left.appendChild(conf);
+            right.appendChild(chat);
+            right.appendChild(studio);
+            break;
+          default:
+          case MODES.FIFTY_FIFTY:
+            left.appendChild(conf);
+            left.appendChild(studio);
+            right.appendChild(chat);
+            break;
+        }
+      };
+      let currentMode = MODES.FIFTY_FIFTY;
+      const switchMode = (mode) => {
+        currentMode = mode;
+        applyMode(mode);
+      };
+      switchMode(currentMode);
+    </script>
+  </body>
+</html>
